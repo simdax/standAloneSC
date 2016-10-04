@@ -1,0 +1,6 @@
+~pdef.(0)
+
+PdefAllGui();
+MIDICTL();
+
+Pdefn(\degDur++"0").source

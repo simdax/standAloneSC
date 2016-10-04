@@ -1,0 +1,3 @@
+#!/bin/bash
+
+sclang -al conf.yaml -d test.scd

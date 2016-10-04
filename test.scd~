@@ -1,0 +1,53 @@
+// =====================================================================
+// SuperCollider Workspace
+// =====================================================================
+
+(
+
+Pdefn.removeAll;
+Pdef.removeAll;
+Window.closeAll;
+
+Pdefn(\degSeed, 1000.rand);
+Pdefn(\stretch, 8);
+Pdefn(\appo, 0);
+Pdefn(\notes, 5);
+Pdefn(\rot, 0); Pdefn(\step, 2); Pdefn(\nb, 4);
+Pdefn(\basse, Pstep(Pseries(Pdefn(\rot).asStream, Pdefn(\step).asStream, Pdefn(\nb).asStream).wrap(-2, 4), 2).repeat);
+
+
+Pdef(\acc,
+	Pbind(
+		\basse, Pdefn(\basse),
+		\degree, Pkey(\basse) + [0,2,4],
+		\amp, 0.1,
+	)
+	.midi(0,1)
+);
+
+Pdef(\mel, Pbind(
+	\dir, Pseed(Pdefn(\degSeed), Prand([-1,1],5)).integrate,
+	\dur, Pseed(Pdefn(\degDur), Pwhite(1,2,5).round(0.5)),
+	\amp, 0.2,
+	\do, Pchords(		PdefCol(\acc, \basse)	),
+	\mtranspose, Pdefn(\appo),
+	\degree, PdegreeToKey(
+		Pkey(\dir) + Pdefn(\depart),
+		Pkey(\do),
+		7
+	),
+	\stretch, Pdefn(\stretch).reciprocal,
+)
+	.midi(0,0)
+	.fin(Pdefn(\notes).asStream)
+	.repeat(Pdefn(\repeats).asStream)
+);
+
+Pdef(\acc).play;
+
+
+PdefnAllGui();
+PdefAllGui();
+MIDICTL();
+)
+
